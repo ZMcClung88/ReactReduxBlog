@@ -11,6 +11,7 @@ class PostsNew extends Component {
         {/* onBlur={field.input.onBlur} */}
         {/* ^^^ same as vvv */}
         <input className="form-control" type="text" {...field.input} />
+        {field.meta.error}
       </div>
     );
   }
