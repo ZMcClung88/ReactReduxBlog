@@ -2,58 +2,49 @@ import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
 
 class PostsNew extends Component {
-  renderField(field) {
+  renderField = field => {
     return (
       <div className="form-group">
         <label>{field.label}</label>
-        {/* onChange={field.input.onChange} */}
-        {/* onFocus={field.input.onFocus} */}
-        {/* onBlur={field.input.onBlur} */}
-        {/* ^^^ same as vvv */}
         <input className="form-control" type="text" {...field.input} />
         {field.meta.error}
       </div>
     );
+  };
+  onSubmit(values) {
+    console.log(values);
   }
   render() {
+    const { handleSubmit } = this.props;
     return (
-      <div>
-        <form>
-          <Field label="Title for posts" name="title" component={this.renderField} />
-        </form>
-        <form>
-          <Field label="Categories" name="categories" component={this.renderField} />
-        </form>
-        <form>
-          <Field label="Post Content" name="content" component={this.renderField} />
-        </form>
-      </div>
+      <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
+        <Field name="title" label="Title" component={this.renderField} />
+        <Field name="categories" label="Categories" component={this.renderField} />
+        <Field name="content" label="Post content" component={this.renderField} />
+        <button type="submit" className="btn btn-primary">
+          {' '}
+          Submit
+        </button>
+      </form>
     );
   }
 }
-
 function validate(values) {
-  // console.log(values) -> {title: "asdf", categories: "134312", content: "ererqew"}
   const errors = {};
-
-  //validate the input from "values"
-  if (!values.title || values.title.length < 3) {
-    errors.title = 'Enter a title that is at least 3 characters';
+  if (!values.title) {
+    errors.title = 'Enter a title that has at least 3  character';
   }
   if (!values.categories) {
-    errors.categories = 'Enter some categories';
+    errors.categories = 'Enter a category';
   }
   if (!values.content) {
-    errors.content = 'Enter some content please';
+    errors.content = 'Enter some content';
   }
-
-  // If errors is empty, the form is fine to submit
-  // If errors has *any* properties, redux forms assumes form is invalid
+  //if errors is empty the form is fine to sudmit
+  //if errors has properties - it is not valued
   return errors;
 }
-
 export default reduxForm({
-  // validate: validate,
-  validate,
+  validate, // validate:validate,
   form: 'PostsNewForm'
 })(PostsNew);
