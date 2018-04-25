@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
+import { Link } from 'react-router-dom';
 
 class PostsNew extends Component {
   renderField = field => {
@@ -29,6 +30,9 @@ class PostsNew extends Component {
           {' '}
           Submit
         </button>
+        <Link to="/" className="btn btn-danger">
+          Cancel
+        </Link>
       </form>
     );
   }
