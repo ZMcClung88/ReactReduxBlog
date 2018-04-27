@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { fetchPost } from '../actions';
 
 class PostsShow extends Component {
   componentDidMount() {
-    const { id } = this.props.match.params; // <-- provided directly from react router
+    // This is given from route component
+    const { id } = this.props.match.params;
     this.props.fetchPost(id);
   }
+
   render() {
     const { post } = this.props;
 
@@ -15,8 +18,8 @@ class PostsShow extends Component {
     }
 
     return (
-      // <div>Posts Show!</div>
       <div>
+        <Link to="/">Back to Index</Link>
         <h3>{post.title}</h3>
         <h6>Categories: {post.categories}</h6>
         <p>{post.content}</p>
@@ -26,6 +29,9 @@ class PostsShow extends Component {
 }
 
 function mapStateToProps({ posts }, ownProps) {
-  return { posts: posts[ownProps.match.params.id] }; // returns one specific post vs all posts
+  // first arg is state and second are the props of the function
+  // show they have the id of link
+  return { post: posts[ownProps.match.params.id] };
 }
+
 export default connect(mapStateToProps, { fetchPost })(PostsShow);
